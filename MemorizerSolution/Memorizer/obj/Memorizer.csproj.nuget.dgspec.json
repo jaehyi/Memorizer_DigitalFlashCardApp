@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Jae Yi\\Desktop\\MemorizerSolution\\Memorizer\\Memorizer.csproj": {}
+    "C:\\Users\\Jae Yi\\Desktop\\GitHub Repo\\Memorizer_DigitalFlashCardApp\\MemorizerSolution\\Memorizer\\Memorizer.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Jae Yi\\Desktop\\MemorizerSolution\\Memorizer\\Memorizer.csproj": {
+    "C:\\Users\\Jae Yi\\Desktop\\GitHub Repo\\Memorizer_DigitalFlashCardApp\\MemorizerSolution\\Memorizer\\Memorizer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Jae Yi\\Desktop\\MemorizerSolution\\Memorizer\\Memorizer.csproj",
+        "projectUniqueName": "C:\\Users\\Jae Yi\\Desktop\\GitHub Repo\\Memorizer_DigitalFlashCardApp\\MemorizerSolution\\Memorizer\\Memorizer.csproj",
         "projectName": "Memorizer",
-        "projectPath": "C:\\Users\\Jae Yi\\Desktop\\MemorizerSolution\\Memorizer\\Memorizer.csproj",
+        "projectPath": "C:\\Users\\Jae Yi\\Desktop\\GitHub Repo\\Memorizer_DigitalFlashCardApp\\MemorizerSolution\\Memorizer\\Memorizer.csproj",
         "packagesPath": "C:\\Users\\Jae Yi\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Jae Yi\\Desktop\\MemorizerSolution\\Memorizer\\obj\\",
+        "outputPath": "C:\\Users\\Jae Yi\\Desktop\\GitHub Repo\\Memorizer_DigitalFlashCardApp\\MemorizerSolution\\Memorizer\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -77,7 +77,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }
