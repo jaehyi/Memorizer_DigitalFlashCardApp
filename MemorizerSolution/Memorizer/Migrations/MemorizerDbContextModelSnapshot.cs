@@ -48,6 +48,9 @@ namespace Memorizer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -63,7 +66,23 @@ namespace Memorizer.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("FlashCards");
+                });
+
+            modelBuilder.Entity("Memorizer.Models.FlashCard", b =>
+                {
+                    b.HasOne("Memorizer.Models.Category", "Category")
+                        .WithMany("FlashCards")
+                        .HasForeignKey("CategoryId");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Memorizer.Models.Category", b =>
+                {
+                    b.Navigation("FlashCards");
                 });
 #pragma warning restore 612, 618
         }

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create a Flash Card</h1>
+<h1>Create a Flash Card: @Model?.Category.Id</h1>
 
 @*<h4>FlashCard</h4>*@
 <hr />
@@ -12,6 +12,15 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @*<select class="form-select" aria-label="Default select example">
+                <option selected>Select a Category</option>
+                @foreach (var item in Model.Category.FlashCards)
+                {
+                    <option value="@item">@item</option>
+                }
+                
+            </select>*@
             <div class="form-group">
                 <label asp-for="Question" class="control-label"></label>
                 <input asp-for="Question" class="form-control" />
@@ -23,19 +32,19 @@
                 <span asp-validation-for="Answer" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CreatedOn" class="control-label"></label>
-                <input asp-for="CreatedOn" class="form-control" />
-                <span asp-validation-for="CreatedOn" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UpdatedOn" class="control-label"></label>
-                <input asp-for="UpdatedOn" class="form-control" />
-                <span asp-validation-for="UpdatedOn" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Note" class="control-label"></label>
                 <input asp-for="Note" class="form-control" />
                 <span asp-validation-for="Note" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedOn" class="control-label">Created On: @DateTime.Now.ToShortDateString()</label>
+                <input asp-for="CreatedOn" type="hidden" value="@DateTime.Now.Date" class="form-control" />
+                <span asp-validation-for="CreatedOn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdatedOn" class="control-label">Updated On: @DateTime.Now.ToShortDateString()</label>
+                <input asp-for="UpdatedOn" type="hidden" value="@DateTime.Now.Date" class="form-control" />
+                <span asp-validation-for="UpdatedOn" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

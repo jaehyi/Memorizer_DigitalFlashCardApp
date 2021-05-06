@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Memorizer.Migrations
 {
     [DbContext(typeof(MemorizerDbContext))]
-    [Migration("20210412041139_AddingCategories")]
-    partial class AddingCategories
+    [Migration("20210503005850_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,6 +50,9 @@ namespace Memorizer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -65,7 +68,23 @@ namespace Memorizer.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("FlashCards");
+                });
+
+            modelBuilder.Entity("Memorizer.Models.FlashCard", b =>
+                {
+                    b.HasOne("Memorizer.Models.Category", "Category")
+                        .WithMany("FlashCards")
+                        .HasForeignKey("CategoryId");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Memorizer.Models.Category", b =>
+                {
+                    b.Navigation("FlashCards");
                 });
 #pragma warning restore 612, 618
         }

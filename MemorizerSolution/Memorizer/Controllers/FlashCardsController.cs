@@ -6,12 +6,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Memorizer.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Memorizer.Controllers
 {
     public class FlashCardsController : Controller
     {
         private readonly MemorizerDbContext _context;
+        //private readonly UserManager<BugTrackerUser> _userManager;
+
+        //public TasksController(UserManager<BugTrackerUser> userManager, BTAuthContext context)
+        //{
+        //    _userManager = userManager;
+        //    _context = context;
+        //}
 
         public FlashCardsController(MemorizerDbContext context)
         {
@@ -22,6 +30,21 @@ namespace Memorizer.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.FlashCards.ToListAsync());
+
+            // var catRes = await _context.Categories.ToListAsync();
+            // var flashRes = await _context.FlashCards.ToListAsync();
+            //var filteredTask = catRes.Join(flashRes,
+            //          c => c.Id,
+            //          f => f.Category.Id,
+            //          (c, f) => f).ToList();
+
+            //var cardCat = await _context.FlashCards.Include(f => f.Category)
+            //    .ThenInclude(c => c).ToListAsync();
+                
+
+
+            //// var tuple = (catRes, flashRes);
+            // return View(cardCat);
         }
 
         // GET: FlashCards/Details/5
