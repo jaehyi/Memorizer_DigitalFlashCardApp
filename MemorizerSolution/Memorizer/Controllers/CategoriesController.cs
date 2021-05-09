@@ -33,7 +33,10 @@ namespace Memorizer.Controllers
             }
 
             var category = await _context.Categories
+                .Include(c => c.FlashCards)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (category == null)
             {
                 return NotFound();
@@ -53,13 +56,22 @@ namespace Memorizer.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Desc")] Category category)
+        public async Task<IActionResult> Create([Bind("Name,Desc")] Category category)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(category);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(category);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to save changes. " +
+                    "Try again, and if the problem persists " +
+                    "see your system administrator.");
             }
             return View(category);
         }
@@ -72,7 +84,7 @@ namespace Memorizer.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories.FindAsync(id);
+            var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -124,6 +136,7 @@ namespace Memorizer.Controllers
             }
 
             var category = await _context.Categories
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {

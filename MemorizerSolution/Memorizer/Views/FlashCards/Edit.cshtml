@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Edit";
+    var categories = ViewData["CategoryDropDownList"] as IEnumerable<Category>;
 }
 
 <h1>Edit</h1>
@@ -13,6 +14,18 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+
+            <div class="form-group">
+                <label class="control-label">Please select a category</label>
+                <select name="CategoryId" class="form-control" aria-label="Default select example" required>
+                    <option value="@Model.CategoryId">Current: @categories.FirstOrDefault(c => c.Id == Model.CategoryId).Name</option>
+                    @foreach (var category in categories)
+                    {
+                        <option value="@category.Id">@category.Name</option>
+                    }
+                </select>
+            </div>
+
             <div class="form-group">
                 <label asp-for="Question" class="control-label"></label>
                 <input asp-for="Question" class="form-control" />

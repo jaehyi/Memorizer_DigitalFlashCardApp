@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Memorizer.Migrations
 {
     [DbContext(typeof(MemorizerDbContext))]
-    [Migration("20210503005850_initial")]
-    partial class initial
+    [Migration("20210508230549_initial create")]
+    partial class initialcreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,6 +32,7 @@ namespace Memorizer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -50,7 +51,7 @@ namespace Memorizer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CategoryId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
@@ -77,7 +78,9 @@ namespace Memorizer.Migrations
                 {
                     b.HasOne("Memorizer.Models.Category", "Category")
                         .WithMany("FlashCards")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
                 });

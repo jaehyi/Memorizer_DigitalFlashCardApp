@@ -1,26 +1,36 @@
-﻿@model Memorizer.Models.FlashCard
+﻿@model FlashCard
 
 @{
     ViewData["Title"] = "Create";
+    var categories = ViewData["CategoryDropDownList"] as IEnumerable<Category>;
+    // var categories = Model.Categories.Select(c => new SelectListItem { Value = c.Name }).ToList();
 }
 
-<h1>Create a Flash Card: @Model?.Category.Id</h1>
+<h1>Create a Flash Card</h1>
 
 @*<h4>FlashCard</h4>*@
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            @*<select class="form-select" aria-label="Default select example">
-                <option selected>Select a Category</option>
-                @foreach (var item in Model.Category.FlashCards)
-                {
-                    <option value="@item">@item</option>
-                }
-                
-            </select>*@
+            <div class="form-group">
+                <label class="control-label">Please select a category</label>
+                    <div class="row">
+                        <div class="col-12">
+                            <select name="CategoryId" class="form-control" aria-label="Default select example" required>
+                                @foreach (var category in categories)
+                                {
+                                    <option value="@category.Id">@category.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-6 ali">
+                            <a asp-controller="Categories" asp-action="Create">  New Category?</a>
+                        </div>
+                    </div>
+            </div>
             <div class="form-group">
                 <label asp-for="Question" class="control-label"></label>
                 <input asp-for="Question" class="form-control" />

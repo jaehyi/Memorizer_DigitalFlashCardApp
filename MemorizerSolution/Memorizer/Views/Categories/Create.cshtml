@@ -4,12 +4,12 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Create a Category</h1>
 
-<h4>Category</h4>
+@*<h4>Category</h4>*@
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -30,7 +30,8 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="pr-3">Back to List</a>
+    <a asp-controller="FlashCards" asp-action="Create">Create a Flash Card</a>
 </div>
 
 @section Scripts {

@@ -7,39 +7,49 @@
 <div class="card">
     <h3 class="card-header"><i class="bi bi-card-heading"></i> Flash Card Details</h3>
     <dl class="card-body">
-        <dt class = "card-header">
+        <dt class="card-header">
+            @Html.DisplayNameFor(model => model.Category.Name)
+        </dt>
+        <dd class="card-body">
+            @Html.DisplayFor(model => model.Category.Name)
+        </dd>
+        <dt class="card-header">
             @Html.DisplayNameFor(model => model.Question)
         </dt>
-        <dd class = "card-body">
+        <dd class="card-body">
             @Html.DisplayFor(model => model.Question)
         </dd>
-        <dt class = "card-header">
+        <dt class="card-header">
             @Html.DisplayNameFor(model => model.Answer)
         </dt>
-        <dd class = "card-body">
+        <dd class="card-body">
             @Html.DisplayFor(model => model.Answer)
         </dd>
-        <dt class = "card-header">
+        <dt class="card-header">
             @Html.DisplayNameFor(model => model.CreatedOn)
         </dt>
-        <dd class = "card-body">
+        <dd class="card-body">
             @Html.DisplayFor(model => model.CreatedOn)
         </dd>
-        <dt class = "card-header">
+        <dt class="card-header">
             @Html.DisplayNameFor(model => model.UpdatedOn)
         </dt>
-        <dd class = "card-body">
+        <dd class="card-body">
             @Html.DisplayFor(model => model.UpdatedOn)
         </dd>
-        <dt class = "card-header">
+        <dt class="card-header">
             @Html.DisplayNameFor(model => model.Note)
         </dt>
-        <dd class = "card-body">
+        <dd class="card-body">
             @Html.DisplayFor(model => model.Note)
         </dd>
     </dl>
+    <div class="card-footer">
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="m-3 p-2">
+    @*<a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>*@
 </div>

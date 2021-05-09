@@ -1,6 +1,4 @@
-﻿@*@model ValueTuple<IEnumerable<Memorizer.Models.Category>,IEnumerable<Memorizer.Models.FlashCard>>*@
-
-@model IEnumerable<FlashCard>
+﻿@model IEnumerable<FlashCard>
 @{
     ViewData["Title"] = "Index";
 }
@@ -12,11 +10,44 @@
         <a asp-action="Create" class="btn btn-primary float-right"><i class="fas fa-plus"></i></a>
     </div>
 </div>
-<table class="table table-responsive table-hover">
+
+<div class="card-deck">
+    @foreach (FlashCard flashCard in Model)
+    {
+        <div class="card text-center border-primary">
+            <div class="card-header">
+                @Html.DisplayFor(modelItem => flashCard.Category.Name)
+            </div>
+            <div class="card-header font-weight-bold">
+                @Html.DisplayFor(modelItem => flashCard.Question)
+            </div>
+            <div class="card-body">
+                <div class="card-title">
+                    @Html.DisplayFor(modelItem => flashCard.Answer)
+                </div>
+                <div class="font-italic">
+                    @if (flashCard.Note != null)
+                    {
+                        @:Note: @Html.DisplayFor(modelItem => flashCard.Note)
+                    }
+                </div>
+            </div>
+            
+            <div class="card-footer">
+                <a asp-action="Edit" asp-route-id="@flashCard.Id"><i class="fas fa-edit m-1"></i></a>
+                <a asp-action="Details" asp-route-id="@flashCard.Id"><i class="fas fa-eye m-1" style="color: blue"></i></a>
+                <a asp-action="Delete" asp-route-id="@flashCard.Id"><i class="fas fa-trash-alt m-1" style="color: red"></i></a>
+            </div>
+        </div>
+    }
+</div>
+
+
+@*<table class="table table-responsive table-hover">
     <thead>
         <tr>
             <th>
-                @*@Html.DisplayNameFor(model => model.Category.Name)*@
+                @Html.DisplayNameFor(model => model.Category.Name)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Question)
@@ -40,7 +71,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @*@Html.DisplayFor(modelItem => item.Category.Name)*@
+                @Html.DisplayFor(modelItem => item.Category.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Question)
@@ -49,13 +80,13 @@
                 @Html.DisplayFor(modelItem => item.Answer)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Note)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.CreatedOn)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.UpdatedOn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Note)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
@@ -65,4 +96,4 @@
         </tr>
 }
     </tbody>
-</table>
+</table>*@

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Memorizer.Models;
 using Microsoft.AspNetCore.Identity;
+using Memorizer.Models.ViewModel;
 
 namespace Memorizer.Controllers
 {
@@ -29,7 +30,10 @@ namespace Memorizer.Controllers
         // GET: FlashCards
         public async Task<IActionResult> Index()
         {
-            return View(await _context.FlashCards.ToListAsync());
+            // return View(await _context.FlashCards.ToListAsync());
+
+            return View(await _context.FlashCards.Include(f => f.Category).ToListAsync());
+
 
             // var catRes = await _context.Categories.ToListAsync();
             // var flashRes = await _context.FlashCards.ToListAsync();
@@ -40,7 +44,7 @@ namespace Memorizer.Controllers
 
             //var cardCat = await _context.FlashCards.Include(f => f.Category)
             //    .ThenInclude(c => c).ToListAsync();
-                
+
 
 
             //// var tuple = (catRes, flashRes);
@@ -56,6 +60,8 @@ namespace Memorizer.Controllers
             }
 
             var flashCard = await _context.FlashCards
+                .Include(f => f.Category)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (flashCard == null)
             {
@@ -68,7 +74,13 @@ namespace Memorizer.Controllers
         // GET: FlashCards/Create
         public IActionResult Create()
         {
+            ViewData["CategoryDropDownList"] = _context.Categories
+                .AsNoTracking().ToList();
             return View();
+
+            //FlashCardCategoryViewModel flashCardCategoryViewModel = new FlashCardCategoryViewModel();
+            //flashCardCategoryViewModel.Categories = _context.Categories.AsNoTracking().ToList();
+            //return View(flashCardCategoryViewModel);
         }
 
         // POST: FlashCards/Create
@@ -76,10 +88,11 @@ namespace Memorizer.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Question,Answer,CreatedOn,UpdatedOn,Note")] FlashCard flashCard)
+        public async Task<IActionResult> Create([Bind("Id,Question,Answer,CreatedOn,UpdatedOn,Note")] FlashCard flashCard, int CategoryId)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid )
             {
+                flashCard.CategoryId = CategoryId;
                 _context.Add(flashCard);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -100,6 +113,10 @@ namespace Memorizer.Controllers
             {
                 return NotFound();
             }
+            
+            ViewData["CategoryDropDownList"] = _context.Categories
+                .AsNoTracking().ToList();
+
             return View(flashCard);
         }
 
@@ -108,7 +125,7 @@ namespace Memorizer.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Question,Answer,CreatedOn,UpdatedOn,Note")] FlashCard flashCard)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Question,Answer,CreatedOn,UpdatedOn,Note")] FlashCard flashCard, int CategoryId)
         {
             if (id != flashCard.Id)
             {
@@ -119,6 +136,7 @@ namespace Memorizer.Controllers
             {
                 try
                 {
+                    flashCard.CategoryId = CategoryId;
                     _context.Update(flashCard);
                     await _context.SaveChangesAsync();
                 }
