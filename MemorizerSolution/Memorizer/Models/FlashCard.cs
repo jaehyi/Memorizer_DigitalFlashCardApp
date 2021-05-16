@@ -13,8 +13,6 @@ namespace Memorizer.Models
         [Key]
         public int Id { get; set; }
 
-        public int CategoryId { get; set; }
-
         [Required]
         public string Question { get; set; }
 
@@ -31,6 +29,8 @@ namespace Memorizer.Models
         
         public string Note { get; set; }
 
+        public int CategoryId { get; set; }
+        
         public Category Category { get; set; }
     }
 }

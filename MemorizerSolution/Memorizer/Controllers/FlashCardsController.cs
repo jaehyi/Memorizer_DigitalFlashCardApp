@@ -30,25 +30,7 @@ namespace Memorizer.Controllers
         // GET: FlashCards
         public async Task<IActionResult> Index()
         {
-            // return View(await _context.FlashCards.ToListAsync());
-
             return View(await _context.FlashCards.Include(f => f.Category).ToListAsync());
-
-
-            // var catRes = await _context.Categories.ToListAsync();
-            // var flashRes = await _context.FlashCards.ToListAsync();
-            //var filteredTask = catRes.Join(flashRes,
-            //          c => c.Id,
-            //          f => f.Category.Id,
-            //          (c, f) => f).ToList();
-
-            //var cardCat = await _context.FlashCards.Include(f => f.Category)
-            //    .ThenInclude(c => c).ToListAsync();
-
-
-
-            //// var tuple = (catRes, flashRes);
-            // return View(cardCat);
         }
 
         // GET: FlashCards/Details/5
@@ -77,10 +59,6 @@ namespace Memorizer.Controllers
             ViewData["CategoryDropDownList"] = _context.Categories
                 .AsNoTracking().ToList();
             return View();
-
-            //FlashCardCategoryViewModel flashCardCategoryViewModel = new FlashCardCategoryViewModel();
-            //flashCardCategoryViewModel.Categories = _context.Categories.AsNoTracking().ToList();
-            //return View(flashCardCategoryViewModel);
         }
 
         // POST: FlashCards/Create
