@@ -23,8 +23,6 @@ namespace Memorizer.Controllers
         {
             _userManager = userManager;
             _context = context;
-            
-            // TODO: Filter by category
         }
 
         // GET: FlashCards
