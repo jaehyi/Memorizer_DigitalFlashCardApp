@@ -8,29 +8,45 @@ using Microsoft.EntityFrameworkCore;
 using Memorizer.Models;
 using Microsoft.AspNetCore.Identity;
 using Memorizer.Models.ViewModel;
+using Microsoft.AspNetCore.Authorization;
+using Memorizer.Areas.Identity.Data;
 
 namespace Memorizer.Controllers
 {
+    [Authorize]
     public class FlashCardsController : Controller
     {
         private readonly MemorizerDbContext _context;
-        //private readonly UserManager<BugTrackerUser> _userManager;
+        private readonly UserManager<MemorizerUser> _userManager;
 
-        //public TasksController(UserManager<BugTrackerUser> userManager, BTAuthContext context)
-        //{
-        //    _userManager = userManager;
-        //    _context = context;
-        //}
-
-        public FlashCardsController(MemorizerDbContext context)
+        public FlashCardsController(MemorizerDbContext context, UserManager<MemorizerUser> userManager)
         {
+            _userManager = userManager;
             _context = context;
+            
+            // TODO: Filter by category
         }
 
         // GET: FlashCards
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> Index(int? categoryId)
         {
-            return View(await _context.FlashCards.Include(f => f.Category).ToListAsync());
+            ViewData["CategoryDropDownList"] = _context.Categories
+                .Where(c => c.UserID == _userManager.GetUserId(User))
+                .AsNoTracking().ToList();
+            
+            if (categoryId.HasValue && categoryId != 0)
+            {
+                return View(await _context.FlashCards
+                .Include(f => f.Category)
+                .Where(f => f.Category.UserID == _userManager.GetUserId(User) && f.CategoryId == categoryId)
+                .ToListAsync());
+            }
+
+            return View(await _context.FlashCards
+                .Include(f => f.Category)
+                .Where(f => f.Category.UserID == _userManager.GetUserId(User))
+                .ToListAsync());
         }
 
         // GET: FlashCards/Details/5
@@ -43,8 +59,10 @@ namespace Memorizer.Controllers
 
             var flashCard = await _context.FlashCards
                 .Include(f => f.Category)
+                .Where(f => f.Category.UserID == _userManager.GetUserId(User))
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (flashCard == null)
             {
                 return NotFound();
@@ -57,6 +75,7 @@ namespace Memorizer.Controllers
         public IActionResult Create()
         {
             ViewData["CategoryDropDownList"] = _context.Categories
+                .Where(c => c.UserID == _userManager.GetUserId(User))
                 .AsNoTracking().ToList();
             return View();
         }
@@ -91,8 +110,11 @@ namespace Memorizer.Controllers
             {
                 return NotFound();
             }
-            
+
+            ViewData["UpdatedOn"] = flashCard.UpdatedOn;
+            ViewData["CreatedOn"] = flashCard.CreatedOn;
             ViewData["CategoryDropDownList"] = _context.Categories
+                .Where(c => c.UserID == _userManager.GetUserId(User))
                 .AsNoTracking().ToList();
 
             return View(flashCard);

@@ -1,17 +1,23 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    int? rightBoundary = User.Identity.Name?.IndexOf('@');
+    string userName = rightBoundary != null ?
+        User.Identity.Name.Substring(0, (int)rightBoundary) : null;
+    string welcomeMessage = "Welcome to MemoRiser";
+    welcomeMessage = userName != null ? welcomeMessage + $", {userName}!" : welcomeMessage + "!";
 }
 
-@*<body style="background-image: url('/Images/background.jpg'); background-size: cover">*@
 <body>
-    <div>
-        <div class="text-center">
-            <h1 class="display-2 text-primary pb-5">Welcome to MemoRiser</h1>
-            <h2 class="display-3 text-secondary pb-5">Your Digital Flash Cards App</h2>
-            <h3 class="display-4">
-                Study using this app and watch your knowledge and confidence rise!
-            </h3>
+    <div class="container text-center">
+        <div class="row">
+            <div class="display-3 text-primary pb-2">
+                @welcomeMessage
+            </div>
         </div>
+        <div class="row">
+            <img src="/Images/TraditionalLibrary.jpg" class="img-fluid pb-2" alt="Alternate Text" />
+        </div>
+        <div class="display-4 mb-2 text-center">Your Digital Flash Cards App</div>
+        <div class="h4">Study using this app and watch your knowledge and confidence Rise!</div>
     </div>
 </body>
-

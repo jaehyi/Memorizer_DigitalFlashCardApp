@@ -6,22 +6,29 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Memorizer.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Memorizer.Areas.Identity.Data;
 
 namespace Memorizer.Controllers
 {
+    [Authorize]
     public class CategoriesController : Controller
     {
         private readonly MemorizerDbContext _context;
+        private readonly UserManager<MemorizerUser> _userManager;
 
-        public CategoriesController(MemorizerDbContext context)
+        public CategoriesController(MemorizerDbContext context, UserManager<MemorizerUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Categories.ToListAsync());
+            // return View(await _context.Categories.ToListAsync());
+            return View(await _context.Categories.Where(c => c.UserID == _userManager.GetUserId(User)).ToListAsync());
         }
 
         // GET: Categories/Details/5
@@ -32,7 +39,7 @@ namespace Memorizer.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories
+            var category = await _context.Categories.Where(c => c.UserID == _userManager.GetUserId(User))
                 .Include(c => c.FlashCards)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -56,12 +63,13 @@ namespace Memorizer.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Desc")] Category category)
+        public async Task<IActionResult> Create([Bind("UserID, Name,Desc")] Category category)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
+                    category.UserID = _userManager.GetUserId(User);
                     _context.Add(category);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
@@ -84,7 +92,7 @@ namespace Memorizer.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
+            var category = await _context.Categories.Where(c => c.UserID == _userManager.GetUserId(User)).FirstOrDefaultAsync(c => c.Id == id);
             if (category == null)
             {
                 return NotFound();

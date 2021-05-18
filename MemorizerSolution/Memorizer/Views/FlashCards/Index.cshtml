@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<FlashCard>
 @{
     ViewData["Title"] = "Index";
+    var categories = ViewData["CategoryDropDownList"] as IEnumerable<Category>;
 }
 <div class="row pt-4 pb-4">
     <div class="col-6">
@@ -11,89 +12,113 @@
     </div>
 </div>
 
-<div class="card-deck">
+<form asp-action="Index" method="get">
+    <div class="form-group row">
+        @*<span class="form-check-label">Filter by Category</span>*@
+            <label class="col-sm-3 col-form-label">Filter by Category</label>
+            <select class="custom-select col-sm-5 w-auto" name="CategoryId">
+                <option value=0>Select a Category</option>
+                @foreach (Category category in categories)
+                {
+                    <option value="@category.Id">@category.Name</option>
+                }
+            </select>
+            <input class="btn btn-primary offset-sm-1 col-sm-2" type="submit" value="Filter" />
+    </div>
+</form>
+
+
+<div class="row row-cols-1 row-cols-md-2 g-4">
     @foreach (FlashCard flashCard in Model)
     {
-        <div class="card text-center border-primary">
-            <div class="card-header">
-                @Html.DisplayFor(modelItem => flashCard.Category.Name)
-            </div>
-            <div class="card-header font-weight-bold">
-                @Html.DisplayFor(modelItem => flashCard.Question)
-            </div>
-            <div class="card-body">
-                <div class="card-title">
-                    @Html.DisplayFor(modelItem => flashCard.Answer)
+        <div class="col p-3">
+            <div class="card w-auto 100 text-center border-primary flip-box">
+                <div class="card-header">
+                    @Html.DisplayFor(modelItem => flashCard.Category.Name)
                 </div>
-                <div class="font-italic">
-                    @if (flashCard.Note != null)
-                    {
-                        @:Note: @Html.DisplayFor(modelItem => flashCard.Note)
-                    }
+                <div class="flip-box-inner">
+                    <div class="flip-box-front">
+                        <div class="card-text font-weight-bold pt-1">
+                            @Html.DisplayFor(modelItem => flashCard.Question)
+                        </div>
+                    </div>
+                    <div class="flip-box-back">
+                        <div class="card-text">
+                            <div class="card-text pb-2">
+                                @Html.DisplayFor(modelItem => flashCard.Answer)
+                            </div>
+                            <div class="font-italic text-muted">
+                                @if (flashCard.Note != null)
+                                {
+                                    @:Note: @Html.DisplayFor(modelItem => flashCard.Note)
+                                }
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="card-footer">
-                <a asp-action="Edit" asp-route-id="@flashCard.Id"><i class="fas fa-edit m-1"></i></a>
-                <a asp-action="Details" asp-route-id="@flashCard.Id"><i class="fas fa-eye m-1" style="color: blue"></i></a>
-                <a asp-action="Delete" asp-route-id="@flashCard.Id"><i class="fas fa-trash-alt m-1" style="color: red"></i></a>
+                <div class="card-footer">
+                    <a asp-action="Edit" asp-route-id="@flashCard.Id"><i class="fas fa-edit m-1"></i></a>
+                    <a asp-action="Details" asp-route-id="@flashCard.Id"><i class="fas fa-eye m-1" style="color: deepskyblue"></i></a>
+                    <a asp-action="Delete" asp-route-id="@flashCard.Id"><i class="fas fa-trash-alt m-1" style="color: red"></i></a>
+                </div>
             </div>
         </div>
     }
 </div>
 
 
+
 @*<table class="table table-responsive table-hover">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Category.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Question)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Answer)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Note)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedOn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedOn)
-            </th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Question)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Answer)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Note)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedOn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedOn)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>*@
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Category.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Question)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Answer)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Note)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedOn)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UpdatedOn)
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Question)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Answer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Note)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedOn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdatedOn)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>*@

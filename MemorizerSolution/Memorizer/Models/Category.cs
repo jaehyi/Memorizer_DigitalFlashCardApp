@@ -22,5 +22,9 @@ namespace Memorizer.Models
 
         [DisplayName("Flash Cards")]
         public ICollection<FlashCard> FlashCards { get; set; }
+
+        [ForeignKey("Id")]
+        public string UserID { get; set; }
+
     }
 }
